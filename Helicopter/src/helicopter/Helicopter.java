@@ -2,7 +2,7 @@ package helicopter;
 
 public class Helicopter {
 
-     private static int nextId;
+     private static int nextId = 1;
      private int id;
      private int fuelLevel ;
     private int altitude ;
