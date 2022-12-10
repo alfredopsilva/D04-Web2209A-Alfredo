@@ -34,11 +34,11 @@ public class HelicopterMenu {
 
             if (selection == 1) {
 
-                helicopter.startEngine();
+                StartHelicopter();
             } 
             else if (selection == 2)
             {
-                helicopter.stopEngine();
+                StopHelicopter();
 
             } else if (selection == 3) 
             {
@@ -51,4 +51,38 @@ public class HelicopterMenu {
             }
         
     }
+
+    public void StartHelicopter()
+    {
+        if(helicopter.canStartEngine())
+        {
+            System.out.println("Starting Engine");
+            helicopter.startEngine();
+            System.out.println(helicopter.displayHelicopter());
+        }
+        else if (helicopter.isEngineRunning())
+        {
+            System.out.println("Your engine is already running! ");
+        }
+        else
+        {
+            System.out.println("Error! Cannot Start Engine! ");
+        }
+    }
+
+   public void StopHelicopter()
+   {
+       if(helicopter.canStopEngine())
+       {
+           System.out.println("Stopping Engine");
+           helicopter.stopEngine();
+           System.out.println(helicopter.displayHelicopter());
+       } else if (!helicopter.isEngineRunning()) {
+           System.out.println("Your engine is already stopped!");
+       }
+       else
+       {
+           System.out.println("Error! Cannot Stop Engine!");
+       }
+   }
 }
