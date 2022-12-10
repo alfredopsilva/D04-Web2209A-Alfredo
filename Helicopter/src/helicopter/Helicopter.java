@@ -2,8 +2,8 @@ package helicopter;
 
 public class Helicopter {
 
-     private static int nextId = 1;
-     private int id;
+     private static int nextId = 82;
+     private String id = "HEP12";
      private int fuelLevel ;
     private int altitude ;
 private boolean engineRunning = false;
@@ -11,7 +11,7 @@ private boolean engineRunning = false;
     // Constructor
 
     public Helicopter(){
-        this.id = nextId++;
+        this.id = id + nextId++;
         this.fuelLevel = 100;
         this.altitude = 0;
         this.engineRunning = false;
@@ -19,7 +19,7 @@ private boolean engineRunning = false;
 
 
     // Getters
-    public int getId(){
+    public String getId(){
         return id;
     }
     public int getFuelLevel() {

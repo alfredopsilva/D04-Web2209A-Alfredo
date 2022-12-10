@@ -6,7 +6,6 @@ public class Program {
         Helicopter helicopter = new Helicopter();
         HelicopterMenu menu = new HelicopterMenu(helicopter);
         menu.start();
-
     }
 
 }
