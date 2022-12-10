@@ -2,6 +2,14 @@ package helicopter;
 
 public class Helicopter {
 
+    // Final Data-Members
+
+    private static final int MAX_ALTITUDE = 5000;
+    private static final int MIN_ALTITUDE = 0;
+    private static final int MAX_FUEL_RANGE = 100;
+    private static final int MIN_FUEL_RANGE = 0;
+
+
     //Private Data-Members
      private static int nextId = 82;
      private String id = "HEP12";
@@ -38,22 +46,22 @@ public class Helicopter {
 
     public boolean isFuelEmpty()
     {
-        return getFuelLevel() == 0;
+        return getFuelLevel() == MIN_FUEL_RANGE;
     }
 
     public boolean isFuelFull()
     {
-        return getFuelLevel() == 100;
+        return getFuelLevel() == MAX_FUEL_RANGE;
     }
 
     public boolean isLanded()
     {
-        return getAltitude() == 0;
+        return getAltitude() == MIN_ALTITUDE;
     }
 
     public boolean isFlying()
     {
-        return getAltitude() != 0;
+        return getAltitude() > MIN_ALTITUDE;
     }
 
     // Can-Do-Action Getters
@@ -73,7 +81,8 @@ public class Helicopter {
 
     public boolean canStopEngine()
     {
-        return engineRunning;
+        return engineRunning
+                && isLanded();
     }
 
     public void stopEngine()
