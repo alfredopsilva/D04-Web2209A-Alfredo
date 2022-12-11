@@ -14,7 +14,7 @@ public class Helicopter {
      private static int nextId = 82;
      private String id = "HEP12";
      private int fuelLevel ;
-     private int altitude ;
+     private double altitude ;
      private boolean engineRunning = false;
 
     // Constructor
@@ -35,7 +35,7 @@ public class Helicopter {
     {
         return fuelLevel;
     }
-    public int getAltitude()
+    public double getAltitude()
     {
         return altitude;
     }
@@ -81,7 +81,7 @@ public class Helicopter {
 
     public boolean canStopEngine()
     {
-        return engineRunning
+        return isEngineRunning()
                 && isLanded();
     }
 
@@ -90,6 +90,22 @@ public class Helicopter {
         if(canStopEngine())
             engineRunning = false;
     }
+
+    public boolean canFlyToAltitude(double altitude){
+
+        return isEngineRunning();
+
+    }
+    public void flyToAltitude(double altitude)
+    {
+         this.altitude = altitude;
+    }
+
+    public void landing()
+    {
+        this.altitude = 0;
+    }
+
 
     // To String method
     @Override
