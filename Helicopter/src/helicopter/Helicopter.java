@@ -8,7 +8,9 @@ public class Helicopter {
     private static final int MIN_ALTITUDE = 0;
     private static final int MAX_FUEL_RANGE = 100;
     private static final int MIN_FUEL_RANGE = 0;
-
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_RESET = "\u001B[0m";
 
     //Private Data-Members
      private static int nextId = 82;
@@ -21,7 +23,7 @@ public class Helicopter {
 
     public Helicopter(){
         this.id = id + nextId++;
-        this.fuelLevel = 100;
+        this.fuelLevel = MAX_FUEL_RANGE;
         this.altitude = 0;
         this.engineRunning = false;
     };
@@ -82,7 +84,8 @@ public class Helicopter {
     public boolean canStopEngine()
     {
         return isEngineRunning()
-                && isLanded();
+                && isLanded()
+                && !isFlying();
     }
 
     public void stopEngine()
@@ -111,13 +114,14 @@ public class Helicopter {
     @Override
     public String toString()
     {
-        return "Helicopter #" + id;
+        return "\nHelicopter #" + id;
     }
 
     public String displayHelicopter() // Why this method is not Override?
     { 
         return toString()
-               + ": " + (isEngineRunning() ? "Engine on" : "Engine off")
+               + ": " + (isEngineRunning() ? "Engine" + ANSI_GREEN + " ON" + ANSI_RESET:
+                                              "Engine" + ANSI_RED + " OFF" + ANSI_RESET)
                + ", " + "Altitude = " + altitude
                + ", " + "Fuel Level = " + fuelLevel;
 

@@ -131,9 +131,10 @@ public class HelicopterMenu {
         double newAltitude = helicopter.getAltitude() + autoAltitude;
         if(helicopter.canFlyToAltitude(newAltitude))
         {
-           System.out.println("FLLLLYIIIIING UP !!!");
-           helicopter.flyToAltitude(newAltitude);
-           System.out.println("Actual Altitude .: " + helicopter.getAltitude());
+            System.out.println("Distance requested .: " + autoAltitude);
+            System.out.println("FLLLLYIIIIING UP !!!");
+            helicopter.flyToAltitude(newAltitude);
+            System.out.println("Actual Altitude .: " + helicopter.getAltitude());
         }
    }
 
@@ -158,6 +159,7 @@ public class HelicopterMenu {
        double newAltitude = helicopter.getAltitude() - autoAltitude;
        if(helicopter.canFlyToAltitude(newAltitude))
        {
+           System.out.println("Distance requested .: " + autoAltitude);
            System.out.println("FLLLLYIIIIING UP !!!");
            helicopter.flyToAltitude(newAltitude);
            System.out.println("Actual Altitude .: " + helicopter.getAltitude());
@@ -172,6 +174,7 @@ public class HelicopterMenu {
        double newAltitude = helicopter.getAltitude() - userAltitude;
        if(helicopter.canFlyToAltitude(newAltitude))
        {
+
            System.out.println("FLLLLYIIIIING DOWN !!!");
            helicopter.flyToAltitude(newAltitude);
            System.out.println("Actual Altitude .: " + helicopter.getAltitude());
