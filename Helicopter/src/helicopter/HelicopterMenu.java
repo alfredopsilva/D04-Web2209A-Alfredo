@@ -40,55 +40,38 @@ public class HelicopterMenu {
         while (true) {
             int selection = menu.displayAndGetSelection();
 
-            if (selection == 1) {
-
-                StartHelicopter();
-            } 
-            else if (selection == 2)
-            {
-                StopHelicopter();
-
-            } else if (selection == 3) 
-            {
-                autoFlyUp();
-
+            switch (selection) {
+                case 1:
+                    StartHelicopter();
+                    break;
+                case 2:
+                    StopHelicopter();
+                    break;
+                case 3:
+                    autoFlyUp();
+                    break;
+                case 4:
+                    flyUp();
+                    break;
+                case 5:
+                    autoFlyDown();
+                    break;
+                case 6:
+                    flyDown();
+                    break;
+                case 7:
+                    land();
+                    break;
+                case 8:
+                    refuel();
+                    break;
+                case 9:
+                    System.out.println(helicopter.displayHelicopter());
+                    break;
+                case 10:
+                    return;
             }
-            else if (selection == 4)
-            {
-                flyUp();
-
-            }
-            else if (selection == 5)
-            {
-                autoFlyDown();
-
-            }
-            else if (selection == 6)
-            {
-                flyDown();
-
-            }
-            else if (selection == 7)
-            {
-                land();
-
-            }
-            else if (selection == 8)
-            {
-                refuel();
-
-            }
-            else if (selection == 9)
-            {
-                System.out.println(helicopter.displayHelicopter());
-
-            }
-            else if (selection == 10) {
-                
-                return;
-                }
-            }
-        
+        }
     }
 
     public void StartHelicopter()
@@ -136,6 +119,9 @@ public class HelicopterMenu {
             helicopter.flyToAltitude(newAltitude);
             System.out.println("Actual Altitude .: " + helicopter.getAltitude());
         }
+        else if (!helicopter.canFlyToAltitude(newAltitude)) {
+            System.out.println("You cannot fly.");
+        }
    }
 
    public void flyUp()
@@ -174,7 +160,6 @@ public class HelicopterMenu {
        double newAltitude = helicopter.getAltitude() - userAltitude;
        if(helicopter.canFlyToAltitude(newAltitude))
        {
-
            System.out.println("FLLLLYIIIIING DOWN !!!");
            helicopter.flyToAltitude(newAltitude);
            System.out.println("Actual Altitude .: " + helicopter.getAltitude());
@@ -189,9 +174,7 @@ public class HelicopterMenu {
            helicopter.landing();
            System.out.println("Helicopter Landed!!");
        } else if (helicopter.getAltitude() == 0) {
-
            System.out.println("This helicopter is already landed.");
-
        }
        else
        {
@@ -209,7 +192,6 @@ public class HelicopterMenu {
        Random random = new Random();
        int low = 400;
        int high = 500;
-       int altitude = random.nextInt(high-low) + low;
-       return altitude;
+       return random.nextInt(high-low) + low;
    }
 }
