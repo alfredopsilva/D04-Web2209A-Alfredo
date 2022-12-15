@@ -15,9 +15,10 @@ public class Helicopter {
     //Private Data-Members
      private static int nextId = 82;
      private String id = "HEP12";
-     private int fuelLevel ;
+     private double fuelLevel ;
      private double altitude ;
      private boolean engineRunning = false;
+    private boolean exploded;
 
     // Constructor
 
@@ -26,6 +27,7 @@ public class Helicopter {
         this.fuelLevel = MAX_FUEL_RANGE;
         this.altitude = 0;
         this.engineRunning = false;
+        this.exploded = false;
     };
 
     // Getters
@@ -33,7 +35,7 @@ public class Helicopter {
     {
         return id;
     }
-    public int getFuelLevel()
+    public double getFuelLevel()
     {
         return fuelLevel;
     }
@@ -45,7 +47,11 @@ public class Helicopter {
     {
         return engineRunning;
     }
-
+    public boolean isExploded() { return exploded; };
+    public double getFuelRate()
+    {
+        return 1.00 / 100.00;
+    }
     public boolean isFuelEmpty()
     {
         return getFuelLevel() == MIN_FUEL_RANGE;
@@ -66,12 +72,28 @@ public class Helicopter {
         return getAltitude() > MIN_ALTITUDE;
     }
 
+    // Setters
+    public void setFuelLevel(double amount)
+    {
+        if(fuelLevel < MIN_FUEL_RANGE)
+            fuelLevel = MIN_FUEL_RANGE;
+        else if(fuelLevel > MAX_FUEL_RANGE)
+            fuelLevel = MAX_FUEL_RANGE;
+        this.fuelLevel = amount;
+
+        if(isFuelEmpty() && isFlying())
+        {
+            crash();
+        }
+    }
+
     // Can-Do-Action Getters
     public boolean canStartEngine()
     {
         return !engineRunning
                 && isLanded()
-                && !isFuelEmpty();
+                && !isFuelEmpty()
+                && !exploded;
     }
 
     public void startEngine(){
@@ -85,28 +107,63 @@ public class Helicopter {
     {
         return isEngineRunning()
                 && isLanded()
-                && !isFlying();
+                && !exploded;
     }
-
     public void stopEngine()
     {
         if(canStopEngine())
             engineRunning = false;
     }
 
-    public boolean canFlyToAltitude(double altitude){
+    public boolean canFly(){
 
-        return isEngineRunning();
+        return isEngineRunning()
+                && !exploded
+                && !isFuelEmpty();
 
     }
     public void flyToAltitude(double altitude)
     {
+         if(canFly())
+         {
+             if(altitude < MIN_ALTITUDE)
+                 altitude = MIN_ALTITUDE;
+             else if(altitude > MAX_ALTITUDE)
+                 altitude = MAX_ALTITUDE;
+            double offset = altitude - this.altitude;
+            double distance = Math.abs(offset);
+            double fuelBurned = distance * getFuelRate();
+         }
          this.altitude = altitude;
     }
 
     public void landing()
     {
         this.altitude = 0;
+    }
+
+    public boolean canRefuel(double amount)
+    {
+        return !engineRunning
+                && !exploded
+                && isLanded()
+                && !isFuelFull()
+                && amount > 0;
+    }
+    public void refuel (double amount)
+    {
+        if(canRefuel(amount))
+        {
+            double maxAmount = MAX_FUEL_RANGE - fuelLevel;
+            if(amount > maxAmount)
+                amount = maxAmount;
+            setFuelLevel(fuelLevel + amount);
+        }
+    }
+
+    private void crash()
+    {
+
     }
 
 
@@ -123,7 +180,8 @@ public class Helicopter {
                + ": " + (isEngineRunning() ? "Engine" + ANSI_GREEN + " ON" + ANSI_RESET:
                                               "Engine" + ANSI_RED + " OFF" + ANSI_RESET)
                + ", " + "Altitude = " + altitude
-               + ", " + "Fuel Level = " + fuelLevel;
+               + ", " + "Fuel Level = " + fuelLevel
+                + ", " + (exploded ? "(Exploded)" : "(Functional)");
 
     }
 }

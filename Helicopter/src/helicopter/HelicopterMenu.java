@@ -41,32 +41,15 @@ public class HelicopterMenu {
             int selection = menu.displayAndGetSelection();
 
             switch (selection) {
-                case 1:
-                    StartHelicopter();
-                    break;
-                case 2:
-                    StopHelicopter();
-                    break;
-                case 3:
-                    autoFlyUp();
-                    break;
-                case 4:
-                    flyUp();
-                    break;
-                case 5:
-                    autoFlyDown();
-                    break;
-                case 6:
-                    flyDown();
-                    break;
-                case 7:
-                    land();
-                    break;
-                case 8:
-                    refuel();
-                    break;
-                case 9:
-                    System.out.println(helicopter.displayHelicopter());
+                case 1: StartHelicopter();      break;
+                case 2: StopHelicopter();       break;
+                case 3: autoFlyUp();            break;
+                case 4: flyUp();                break;
+                case 5: autoFlyDown();          break;
+                case 6: flyDown();              break;
+                case 7: land();                 break;
+                case 8: refuel();               break;
+                case 9: System.out.println(helicopter.displayHelicopter());
                     break;
                 case 10:
                     return;
@@ -112,14 +95,14 @@ public class HelicopterMenu {
    {
         double autoAltitude = generatingRandomAltitude();
         double newAltitude = helicopter.getAltitude() + autoAltitude;
-        if(helicopter.canFlyToAltitude(newAltitude))
+        if(helicopter.canFly())
         {
             System.out.println("Distance requested .: " + autoAltitude);
             System.out.println("FLLLLYIIIIING UP !!!");
             helicopter.flyToAltitude(newAltitude);
             System.out.println("Actual Altitude .: " + helicopter.getAltitude());
         }
-        else if (!helicopter.canFlyToAltitude(newAltitude)) {
+        else if (!helicopter.canFly()) {
             System.out.println("You cannot fly.");
         }
    }
@@ -130,7 +113,7 @@ public class HelicopterMenu {
        System.out.print("Enter the distance: ");
        double userAltitude = scanner.nextDouble();
        double newAltitude = helicopter.getAltitude() + userAltitude;
-       if(helicopter.canFlyToAltitude(newAltitude))
+       if(helicopter.canFly())
        {
            System.out.println("FLLLLYIIIIING UP !!!");
            helicopter.flyToAltitude(newAltitude);
@@ -143,7 +126,7 @@ public class HelicopterMenu {
    {
        double autoAltitude = generatingRandomAltitude();
        double newAltitude = helicopter.getAltitude() - autoAltitude;
-       if(helicopter.canFlyToAltitude(newAltitude))
+       if(helicopter.canFly())
        {
            System.out.println("Distance requested .: " + autoAltitude);
            System.out.println("FLLLLYIIIIING UP !!!");
@@ -158,7 +141,7 @@ public class HelicopterMenu {
        System.out.print("Enter the distance: ");
        double userAltitude = scanner.nextDouble();
        double newAltitude = helicopter.getAltitude() - userAltitude;
-       if(helicopter.canFlyToAltitude(newAltitude))
+       if(helicopter.canFly())
        {
            System.out.println("FLLLLYIIIIING DOWN !!!");
            helicopter.flyToAltitude(newAltitude);
@@ -168,7 +151,7 @@ public class HelicopterMenu {
 
    public void land()
    {
-       if(helicopter.canFlyToAltitude(0))
+       if(helicopter.canFly())
        {
            System.out.println("Initiating Landing Procedure");
            helicopter.landing();
