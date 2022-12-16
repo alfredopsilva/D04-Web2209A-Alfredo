@@ -49,7 +49,8 @@ public class HelicopterMenu {
                 case 6: flyDown();              break;
                 case 7: land();                 break;
                 case 8: refuel();               break;
-                case 9: System.out.println(helicopter.displayHelicopter());
+                case 9:
+                    System.out.println(helicopter.displayHelicopter());
                     break;
                 case 10:
                     return;
@@ -129,7 +130,7 @@ public class HelicopterMenu {
        if(helicopter.canFly())
        {
            System.out.println("Distance requested .: " + autoAltitude);
-           System.out.println("FLLLLYIIIIING UP !!!");
+           System.out.println("FLLLLYIIIIING DOWN !!!");
            helicopter.flyToAltitude(newAltitude);
            System.out.println("Actual Altitude .: " + helicopter.getAltitude());
        }

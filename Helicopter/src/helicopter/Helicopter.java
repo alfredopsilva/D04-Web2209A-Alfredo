@@ -1,5 +1,7 @@
 package helicopter;
 
+import java.text.NumberFormat;
+
 public class Helicopter {
 
     // Final Data-Members
@@ -54,7 +56,7 @@ public class Helicopter {
     }
     public boolean isFuelEmpty()
     {
-        return getFuelLevel() == MIN_FUEL_RANGE;
+        return getFuelLevel() <= MIN_FUEL_RANGE;
     }
 
     public boolean isFuelFull()
@@ -124,6 +126,11 @@ public class Helicopter {
     }
     public void flyToAltitude(double altitude)
     {
+        if(isFuelEmpty() && isFlying())
+        {
+            crash();
+        }
+
          if(canFly())
          {
              if(altitude < MIN_ALTITUDE)
@@ -133,8 +140,10 @@ public class Helicopter {
             double offset = altitude - this.altitude;
             double distance = Math.abs(offset);
             double fuelBurned = distance * getFuelRate();
+            this.fuelLevel -= fuelBurned;
          }
          this.altitude = altitude;
+
     }
 
     public void landing()
@@ -163,7 +172,10 @@ public class Helicopter {
 
     private void crash()
     {
-
+        System.out.println("YOU CRASHED!");
+        engineRunning = false;
+        altitude = MIN_ALTITUDE;
+        exploded = true;
     }
 
 
@@ -171,18 +183,18 @@ public class Helicopter {
     @Override
     public String toString()
     {
-        return "\nHelicopter #" + id;
+        return "Helicopter #" + id;
     }
 
     public String displayHelicopter() // Why this method is not Override?
-    { 
+    {
+        NumberFormat display = NumberFormat.getInstance();
         return toString()
                + ": " + (isEngineRunning() ? "Engine" + ANSI_GREEN + " ON" + ANSI_RESET:
                                               "Engine" + ANSI_RED + " OFF" + ANSI_RESET)
                + ", " + "Altitude = " + altitude
-               + ", " + "Fuel Level = " + fuelLevel
+               + ", " + "Fuel Level = " + display.format(fuelLevel)
                 + ", " + (exploded ? "(Exploded)" : "(Functional)");
-
     }
 }
 
