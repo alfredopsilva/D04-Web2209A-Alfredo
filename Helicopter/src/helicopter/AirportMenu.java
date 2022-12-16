@@ -1,6 +1,8 @@
 package helicopter;
 
 import java.util.ArrayList;
+import java.util.Random;
+
 import utility.console.ConsoleMenu;
 
 public class AirportMenu {
@@ -10,15 +12,17 @@ public class AirportMenu {
     {
         // Adding 5 Helicopters to the ArrayList and *technical name for the 16 line*
         helicopters = new ArrayList<>();
-        helicopters.add(new Helicopter());
-        helicopters.add(new Helicopter());
-        helicopters.add(new Helicopter());
-        helicopters.add(new Helicopter());
-        helicopters.add(new Helicopter());
+        helicopters.add(createRandomHelicopter());
+        helicopters.add(createRandomHelicopter());
+        helicopters.add(createRandomHelicopter());
+        helicopters.add(createRandomHelicopter());
+        helicopters.add(createRandomHelicopter());
+
 
         // Adding Options for Menu
         ArrayList<String> options = new ArrayList<String>();
         options.add("> Add Helicopter");
+        options.add("> Add AttackHelicopter");
         options.add("> Remove Helicopter");
         options.add("> Control Helicopter");
         options.add("> Land All Helicopters");
@@ -36,14 +40,29 @@ public class AirportMenu {
         {
             int selection = AirportMenu.displayAndGetSelection();
             switch(selection) {
-                case 1: addHelicopter();          break;
-                case 2: removeHelicopter();       break;
-                case 3: controlHelicopter();      break;
-                case 4: landAllHelicopter();      break;
-                case 5: ;          break;
-                case 6: return;
+                case 1: addHelicopter();              break;
+                case 2: addAttackHelicopter();        break;
+                case 3: removeHelicopter();           break;
+                case 4: controlHelicopter();          break;
+                case 5: landAllHelicopter();          break;
+                case 6: displayAllHelicopters();      break;
+                case 7: return;
             }
             displayAllHelicopters();
+        }
+    }
+
+    private static Helicopter createRandomHelicopter(){
+        Random random = new Random();
+        double low = 0;
+        double high = 1;
+        double generatingRandomNumber =  random.nextDouble(high-low) + low;
+
+        if(generatingRandomNumber <=.5){
+            return new Helicopter();
+        }
+        else{
+            return new AttackHelicopter();
         }
     }
 
@@ -52,6 +71,10 @@ public class AirportMenu {
         helicopters.add(new Helicopter());
     }
 
+    public void addAttackHelicopter()
+    {
+        helicopters.add(new AttackHelicopter());
+    }
     public void removeHelicopter()
     {
         ArrayList<String> options = new ArrayList<String>();

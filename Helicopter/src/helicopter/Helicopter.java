@@ -26,7 +26,7 @@ public class Helicopter {
 
     public Helicopter(){
         this.id = id + nextId++;
-        this.fuelLevel = MAX_FUEL_RANGE;
+        this.fuelLevel = getMaxFuelLevel();
         this.altitude = 0;
         this.engineRunning = false;
         this.exploded = false;
@@ -49,14 +49,17 @@ public class Helicopter {
     {
         return engineRunning;
     }
-    public boolean isExploded() { return exploded; };
+    public boolean isExploded()
+    {
+        return exploded;
+    };
     public double getFuelRate()
     {
         return 1.00 / 100.00;
     }
     public boolean isFuelEmpty()
     {
-        return getFuelLevel() <= MIN_FUEL_RANGE;
+        return getFuelLevel() <= getMinFuelLevel();
     }
 
     public boolean isFuelFull()
@@ -74,16 +77,34 @@ public class Helicopter {
         return getAltitude() > MIN_ALTITUDE;
     }
 
+    public double getMinFuelLevel()
+    {
+        return 0;
+    }
+
+    public double getMaxFuelLevel()
+    {
+        return 100;
+    }
+    public double getMinAltitude()
+    {
+        return 0;
+    }
+    public double getMaxAltitude()
+    {
+        return 5000;
+    }
     // Setters
     public void setFuelLevel(double amount)
     {
-        if(fuelLevel < MIN_FUEL_RANGE)
-            fuelLevel = MIN_FUEL_RANGE;
-        else if(fuelLevel > MAX_FUEL_RANGE)
-            fuelLevel = MAX_FUEL_RANGE;
+        if(fuelLevel < getMinFuelLevel())
+            fuelLevel = getMinFuelLevel();
+        else if(fuelLevel > getMaxFuelLevel())
+            fuelLevel = getMaxFuelLevel();
+
         this.fuelLevel = amount;
 
-        if(isFuelEmpty() && isFlying())
+        if (isFuelEmpty() && isFlying())
         {
             crash();
         }
@@ -126,21 +147,27 @@ public class Helicopter {
     }
     public void flyToAltitude(double altitude)
     {
-        if(isFuelEmpty() && isFlying())
-        {
-            crash();
-        }
+        //if(isFuelEmpty() && isFlying())
+        //{
+            //crash();
+        //}
 
          if(canFly())
          {
-             if(altitude < MIN_ALTITUDE)
-                 altitude = MIN_ALTITUDE;
-             else if(altitude > MAX_ALTITUDE)
-                 altitude = MAX_ALTITUDE;
+            /* if (isFuelEmpty() && isFlying())
+             {
+                 crash();
+             }*/
+
+             if(altitude < getMinAltitude())
+                 altitude = getMinAltitude();
+             else if(altitude > getMaxAltitude())
+                 altitude = getMaxAltitude();
             double offset = altitude - this.altitude;
             double distance = Math.abs(offset);
             double fuelBurned = distance * getFuelRate();
-            this.fuelLevel -= fuelBurned;
+            //this.fuelLevel -= fuelBurned;
+             setFuelLevel(getFuelLevel() - fuelBurned);
          }
          this.altitude = altitude;
 
@@ -163,19 +190,30 @@ public class Helicopter {
     {
         if(canRefuel(amount))
         {
-            double maxAmount = MAX_FUEL_RANGE - fuelLevel;
+            double maxAmount = getMaxFuelLevel() - fuelLevel;
             if(amount > maxAmount)
                 amount = maxAmount;
             setFuelLevel(fuelLevel + amount);
         }
     }
 
-    private void crash()
+    protected void crash()
+    {
+        crashAndExplode();
+    }
+
+    protected final void crashAndExplode()
     {
         System.out.println("YOU CRASHED!");
         engineRunning = false;
-        altitude = MIN_ALTITUDE;
+        altitude = getMinAltitude();
         exploded = true;
+    }
+
+    protected final void crashWithoutExploding()
+    {
+        engineRunning = false;
+        altitude = getMinAltitude();
     }
 
 
