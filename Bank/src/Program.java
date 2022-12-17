@@ -1,5 +1,5 @@
 import utility.swing.windows.Window;
-import utility.AccountView;
+import bank.views.AccountView;
 
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;

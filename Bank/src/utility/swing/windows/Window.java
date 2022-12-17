@@ -30,9 +30,9 @@ public final class Window extends JFrame
         super(title);
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
         setResizable(resizable);
         setContentPane(contentPane);
+        setLocationRelativeTo(null);
     }
 
     @Override

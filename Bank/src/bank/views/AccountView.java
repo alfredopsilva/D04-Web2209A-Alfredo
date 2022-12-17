@@ -1,4 +1,4 @@
-package utility;
+package bank.views;
 
 import utility.swing.components.InputField;
 import utility.swing.components.LabelField;
