@@ -1,13 +1,11 @@
 import utility.console.ConsoleMenu;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TextEditorMenu {
+
 
     private final ConsoleMenu menu;
     TextEditorMenu(){
@@ -32,14 +30,16 @@ public class TextEditorMenu {
         }
     }
 
-    private static void writeTextFile() throws IOException
-    {
-        try(FileWriter writer = new FileWriter("Files/text.txt",true))
-        {
-            writer.write(getUserInput());
-            writer.flush();
+    private static void writeTextFile() throws IOException {
+        File file = new File(getUserPath());
+        if(file.exists()){
+            try (FileWriter writer = new FileWriter(file, true)) {
+                writer.write(getUserInput());
+                writer.flush();
+            }
+        }else {
+            System.out.println("This path doesn't exist.");
         }
-
     }
 
     public static String getUserInput()
@@ -48,6 +48,17 @@ public class TextEditorMenu {
         System.out.println("Type : ");
         return scanner.nextLine() + "\n";
     }
+
+    public static String getUserPath()
+    {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the file's path : ");
+        return scanner.nextLine();
+        //throw = statment similiar to return
+        //throws =
+    }
+
+
 
     private static void readTextFile() throws IOException
     {
