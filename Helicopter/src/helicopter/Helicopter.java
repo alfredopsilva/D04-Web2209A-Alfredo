@@ -104,10 +104,10 @@ public class Helicopter {
 
         this.fuelLevel = amount;
 
-        if (isFuelEmpty() && isFlying())
+      /*  if (isFuelEmpty() && isFlying())
         {
             crash();
-        }
+        }*/
     }
 
     // Can-Do-Action Getters
@@ -147,17 +147,8 @@ public class Helicopter {
     }
     public void flyToAltitude(double altitude)
     {
-        //if(isFuelEmpty() && isFlying())
-        //{
-            //crash();
-        //}
-
          if(canFly())
          {
-            /* if (isFuelEmpty() && isFlying())
-             {
-                 crash();
-             }*/
 
              if(altitude < getMinAltitude())
                  altitude = getMinAltitude();
@@ -168,8 +159,13 @@ public class Helicopter {
             double fuelBurned = distance * getFuelRate();
             //this.fuelLevel -= fuelBurned;
              setFuelLevel(getFuelLevel() - fuelBurned);
+             this.altitude = altitude;
+             if (isFuelEmpty() && isFlying())
+             {
+                 crash();
+             }
          }
-         this.altitude = altitude;
+
 
     }
 

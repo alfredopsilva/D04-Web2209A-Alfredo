@@ -52,7 +52,7 @@ public class AirportMenu {
         }
     }
 
-    private static Helicopter createRandomHelicopter(){
+     private static Helicopter createRandomHelicopter(){
         Random random = new Random();
         double low = 0;
         double high = 1;
