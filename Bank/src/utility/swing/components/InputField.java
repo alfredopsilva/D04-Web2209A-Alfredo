@@ -15,7 +15,7 @@ public final class InputField extends JPanel
     public InputField(String labelText)
     {
         label = new JLabel(labelText);
-        textField = new JTextField(12);
+        textField = new JTextField(18);
 
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 

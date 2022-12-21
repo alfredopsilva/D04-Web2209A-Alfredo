@@ -1,5 +1,6 @@
 package utility.swing.components;
 
+import javax.swing.*;
 import java.util.Objects;
 
 /**

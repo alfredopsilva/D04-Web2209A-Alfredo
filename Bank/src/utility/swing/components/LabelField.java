@@ -28,7 +28,7 @@ public final class LabelField extends JPanel
     private static JLabel createLabel(String text)
     {
         JLabel label = new JLabel(text);
-        label.setHorizontalAlignment(JLabel.RIGHT);
+        label.setHorizontalAlignment(JLabel.LEFT);
         return label;
     }
 
@@ -37,6 +37,7 @@ public final class LabelField extends JPanel
         JLabel label = new JLabel(text);
         Font font = label.getFont();
         label.setFont(new Font(font.getName(), Font.BOLD, font.getSize()));
+        label.setHorizontalAlignment(JLabel.RIGHT);
         return label;
     }
 
