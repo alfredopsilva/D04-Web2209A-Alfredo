@@ -2,7 +2,6 @@ package bank.views;
 
 import bank.models.Account;
 import utility.swing.components.InputField;
-import utility.swing.components.LabelField;
 import utility.swing.layout.LayoutHelper;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
@@ -12,117 +11,90 @@ import java.awt.event.ActionListener;
 
 public class AccountView extends JPanel
 {
-    private final JLabel labelAccountNumber;
-    private final JLabel valueAccountNumber;
-    private final JLabel labelClientName;
-    private final JLabel valueClientName;
-    private final JLabel labelBalance;
-    private final JLabel valueBalance;
+    private final AccountDataView  accountDataView;
+    private final JLabel messageLabel;
     private final InputField amountField;
     private final Account account;
-    private final JButton deposit;
-    private final JButton withdraw;
+    private final JButton depositButton;
+    private final JButton withdrawButton;
 
 
     public AccountView(Account account)
     {
         this.account = account;
-        labelAccountNumber = new JLabel("Account Number: ");
-        valueAccountNumber = new JLabel(Integer.toString(account.getAccountNumber()));
-        labelClientName = new JLabel("Client Name: ");
-        valueClientName = new JLabel(account.getName());
-        labelBalance = new  JLabel("Balance: ");
-        valueBalance = new JLabel(Double.toString(account.getBalance()));
+        accountDataView = new AccountDataView(account);
 
-        JLabel label = new JLabel("Enter an amount");
-        label.setAlignmentX(0.5f);
+        messageLabel = new JLabel("Enter an amount");
+        messageLabel.setAlignmentX(0.5f);
+
         amountField = new InputField("Amount");
 
-        setBorder(LayoutHelper.createEmptyBorder());
-        deposit = new JButton("Deposit");
-        withdraw = new JButton("Withdraw");
+
+        depositButton = new JButton("Deposit");
+        withdrawButton = new JButton("Withdraw");
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(LayoutHelper.createLargeEmptyBorder());
 
-        JPanel buttonSection = new JPanel();
-        buttonSection.add(deposit);
-        buttonSection.add(withdraw);
-        buttonSection.setLayout(new FlowLayout());
-
-        add(labelAccountNumber);
+        add(accountDataView);
         add(LayoutHelper.createRigidArea(20));
-        add(valueAccountNumber);
-        add(LayoutHelper.createRigidArea(20));
-        add(labelClientName);
-        add(LayoutHelper.createRigidArea(20));
-        add(valueClientName);
-        add(LayoutHelper.createRigidArea(20));
-        add(labelBalance);
-        add(LayoutHelper.createRigidArea(20));
-        add(valueBalance);
-        add(LayoutHelper.createRigidArea(20));
-        add(label);
+        add(createMessagePanel());
         add(LayoutHelper.createRigidArea(20));
         add(amountField);
         add(LayoutHelper.createRigidArea(20));
-        add(buttonSection);
+        add(createButtonsPanel());
 
-        setLayout(new GridLayout(3, 2, LayoutHelper.DefaultSize, LayoutHelper.DefaultSize));
-        // Why I have to create these methods inside the constructor?
-        deposit();
-        withdrawal();
     }
-
-    private void withdrawal() {
-        withdraw.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Withdrawal Button { Clicked }");
-                // CONTROLLER: Get User Input
-                double amount = Double.parseDouble(amountField.getText());
-                // MODEL : Handle request by changing the Balance
-                account.withdrawal(amount);
-                // VIEW: update view
-                valueBalance.setText(Double.toString(account.getBalance()));
-            }
-        });
-    }
-
-    private void deposit() {
-        deposit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Deposit Button { Clicked }");
-                // CONTROLLER: Get User Input
-                double amount = Double.parseDouble(amountField.getText());
-                // MODEL : Handle request by changing the Balance
-                account.deposit(amount);
-                // VIEW: update view
-                valueBalance.setText(Double.toString(account.getBalance()));
-            }
-        });
-    }
-
-    public static void configureLookAndFeel() // Can change some settings from the interface.
+    private JPanel createMessagePanel()
     {
-        useSystemLookAndFeel();
-
-        Color backgroundColor = Color.white;
-        ColorUIResource backgroundColorResource = new ColorUIResource(backgroundColor);
-        UIManager.put("Panel.background", backgroundColorResource);
-        UIManager.put("OptionPane.background", backgroundColorResource);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.add(messageLabel);
+        return panel;
     }
 
-    private static void useSystemLookAndFeel() // It's responsible to change de interface.
+    private JPanel createButtonsPanel()
     {
-        try
-        {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }
-        catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException
-               | IllegalAccessException e)
-        {
-            e.printStackTrace();
-        }
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.add(depositButton);
+        panel.add(LayoutHelper.createSmallRigidArea());
+        panel.add(withdrawButton);
+        return panel;
+    }
+
+    public String getAmountField()
+    {
+        return amountField.getText();
+    }
+
+    public void updateName(String name)
+    {
+        accountDataView.updateName(name);
+    }
+
+    public void updateBalance(double balance)
+    {
+        accountDataView.updateBalance(balance);
+    }
+
+    // Action-Listener
+    public void addWithdrawalListener(ActionListener listener)
+    {
+        withdrawButton.addActionListener(listener);
+    }
+
+    public void addDepositListener(ActionListener listener)
+    {
+        depositButton.addActionListener(listener);
+    }
+
+    public void displayMessage(String message)
+    {
+        messageLabel.setText(message);
+    }
+
+    public void resetAmount()
+    {
+        amountField.clearText();
     }
 }
