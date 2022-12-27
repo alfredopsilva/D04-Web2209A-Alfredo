@@ -1,6 +1,10 @@
 package bank.views;
 
 import bank.models.Account;
+import bank.models.BalanceChangedEvent;
+import bank.models.IAccountListener;
+import bank.models.NameChangeEvent;
+import utility.formatting.CurrencyHelper;
 import utility.swing.components.InputField;
 import utility.swing.layout.LayoutHelper;
 import javax.swing.*;
@@ -9,7 +13,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AccountView extends JPanel
+public class AccountView extends JPanel implements IAccountListener
 {
     private final AccountDataView  accountDataView;
     private final JLabel messageLabel;
@@ -72,10 +76,6 @@ public class AccountView extends JPanel
         accountDataView.updateName(name);
     }
 
-    public void updateBalance(double balance)
-    {
-        accountDataView.updateBalance(balance);
-    }
 
     // Action-Listener
     public void addWithdrawalListener(ActionListener listener)
@@ -96,5 +96,14 @@ public class AccountView extends JPanel
     public void resetAmount()
     {
         amountField.clearText();
+    }
+
+    @Override
+    public void changeName(NameChangeEvent event) {
+        SwingUtilities.invokeLater(() -> accountDataView.changeName(event));
+    }
+    @Override
+    public void changeBalance(BalanceChangedEvent event) {
+        SwingUtilities.invokeLater(() -> accountDataView.changeBalance(event));
     }
 }

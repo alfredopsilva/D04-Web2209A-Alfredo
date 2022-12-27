@@ -1,13 +1,16 @@
 package bank.views;
 
 import bank.models.Account;
+import bank.models.BalanceChangedEvent;
+import bank.models.IAccountListener;
+import bank.models.NameChangeEvent;
 import utility.formatting.CurrencyHelper;
 import utility.swing.layout.LayoutHelper;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class AccountDataView extends JPanel{
+public class AccountDataView extends JPanel implements IAccountListener {
 
         private final JLabel nameLabel;
         private final JLabel accountNumberLabel;
@@ -44,13 +47,21 @@ public class AccountDataView extends JPanel{
         return label;
     }
 
-    public void updateBalance(double balance)
-    {
-        balanceLabel.setText(CurrencyHelper.getLocalCurrencyFormatter().format(balance));
-    }
-
     public void updateName(String name)
     {
         nameLabel.setText(name);
+    }
+
+    @Override
+    public void changeName(NameChangeEvent event)
+    {
+        SwingUtilities.invokeLater(()-> nameLabel.setText(event.getName()));
+    }
+
+    @Override
+    public void changeBalance(BalanceChangedEvent event)
+    {
+        double balance = event.getBalance();
+        SwingUtilities.invokeLater(() -> balanceLabel.setText(CurrencyHelper.getLocalCurrencyFormatter().format(balance)));
     }
 }

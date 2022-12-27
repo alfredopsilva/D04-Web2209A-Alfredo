@@ -32,7 +32,7 @@ public class AccountController {
 
             account.withdrawal(amount);
             // VIEW: update view
-            view.updateBalance(account.getBalance());
+            //view.updateBalance(account.getBalance()); => Because we add a Listener we don't need to update view here.
             view.displayMessage("Withdrawal completed successfully " + currencyFormatter.format(amount));
         }
         catch (NumberFormatException e)
@@ -55,7 +55,7 @@ public class AccountController {
             double amount = Double.parseDouble(view.getAmountField());
 
             account.deposit(amount);
-            view.updateBalance(account.getBalance());
+            //view.updateBalance(account.getBalance());
             view.displayMessage("Deposit completed successfully " + currencyFormatter.format(amount));
 
         }
@@ -70,11 +70,6 @@ public class AccountController {
             view.resetAmount();
         }
     }
-
-
-
-
-
 
 
 

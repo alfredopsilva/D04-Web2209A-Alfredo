@@ -2,12 +2,14 @@ package bank.models;
 
 import utility.formatting.CurrencyHelper;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Account {
     private final int AccountNumber;
     private String name;
     private double balance;
+    private ArrayList<IAccountListener> listeners;
 
     /***
      * Create new Account
@@ -20,10 +22,55 @@ public class Account {
         validateName(name);
         validateBalance(Balance);
 
-        this.AccountNumber  = AccountNumber;
-        this.name = name;
-        this.balance = Balance;
+        this.AccountNumber  = AccountNumber; // Its final
+        this.name = name; // Event
+        this.balance = Balance; // Event
+        listeners = new ArrayList<>();
 
+        Thread thread = new Thread(this::collectFees);
+        thread.setDaemon(true);
+        thread.start();
+
+    }
+
+    private void collectFees()
+    {
+        while(true)
+        {
+            sleepThread(2);
+            double fee = calculateFee();
+            if(fee > 0){
+                withdrawFee(fee);
+            }
+        }
+    }
+
+    private static void sleepThread(double seconds) {
+        try {
+            long milliseconds = (long) (seconds * 1000);
+            Thread.sleep(milliseconds);
+        }
+        catch (InterruptedException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private double calculateFee()
+    {
+        if(balance >= 5000)
+            return 0;
+        if(balance >= 1000)
+            return 3;
+        if(balance >= 10)
+            return 10;
+
+        return balance;
+    }
+
+    private void withdrawFee(double fee)
+    {
+        withdrawal(fee);
     }
 
     // Getters Methods
@@ -51,12 +98,11 @@ public class Account {
 
     /***
      * @param amount Its mandatory be positive.
-     * @throws IllegalAccessException if amount is less or equal to zero.
      */
     public void deposit(double amount)
     {
         if(canDeposit(amount))
-            setBalance(balance + amount);
+            setBalance(balance + amount); // Event Change
     }
     private boolean canWithdraw(double amount)
     {
@@ -69,18 +115,38 @@ public class Account {
     public void withdrawal(double amount)
     {
         if(canWithdraw(amount))
-            setBalance(balance - amount);
+            setBalance(balance - amount); // Event Change
     }
 
     //Setters Methods
 
-    public void setBalance(double balance) {
-        this.balance = balance;
+    private void setBalance(double balance)
+    {
+        validateBalance(balance);
+
+        if (this.balance != balance)
+        {
+            double previousBalance = this.balance;
+
+            this.balance = balance;
+
+            for (IAccountListener listener : listeners)
+                listener.changeBalance(new BalanceChangedEvent(AccountNumber, previousBalance, balance));
+        }
     }
-    public void setName(String name)
+    public void setName(String name) throws AccountException
     {
         validateName(name);
-        this.name = name;
+
+        if (!this.name.equals(name))
+        {
+            String previousName = this.name;
+
+            this.name = name;
+
+            for (IAccountListener listener : listeners)
+                listener.changeName(new NameChangeEvent(AccountNumber, previousName, name));
+        }
     }
     @Override
     public String toString()
@@ -97,10 +163,19 @@ public class Account {
         if(name.isBlank())
             throw new IllegalArgumentException("Name is Empty. You need to insert a value.");
     }
-    private static void validateBalance(double Balance)
-    {
+    private static void validateBalance(double Balance) {
         if(Balance < 0)
             throw new IllegalArgumentException("Balance can't be negative. Insert a value");
 
+    }
+
+    public void addListener(IAccountListener listener)
+    {
+        listeners.add(listener);
+    }
+
+    public void removeListener(IAccountListener listener)
+    {
+        listeners.remove(listener);
     }
 }
